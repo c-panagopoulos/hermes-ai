@@ -1,0 +1,72 @@
+.Chat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+    min-height: 100px;
+  max-height: 80vh;
+  height: auto;
+  transition: height 0.3s ease;
+  padding: 8px 16px;
+  width: 100%;
+}
+
+.Message :global(p) {
+  margin: 0;
+}
+
+.Message {
+  max-width: 75%;
+  width: auto;
+  padding: 8px 16px;
+  border-radius: 16px;
+  font-size: 14px;
+  color: #f3f3f3;
+
+ &[data-role="user"] {
+  align-self: flex-end;
+  background: rgba(99, 179, 237, 0.25);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(99, 179, 237, 0.3);
+}
+
+&[data-role="assistant"] {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+}
+
+.Chat > header {
+  text-align: center;
+  align-items: center;
+}
+
+img {
+  height: 48px;
+  width: 48px;
+}
+
+.Header {
+    display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  padding-bottom: 8px;
+}
+
+.Header header {
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.05em;
+}
+
+.TypingIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  font-style: italic;
+}
