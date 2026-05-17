@@ -9,13 +9,13 @@ import {
   SidebarInset,
   SidebarHeader,
   SidebarMenu,
-  SidebarFooter,
   SidebarMenuButton,
   SidebarRail,
-  SidebarTrigger
+  SidebarTrigger,
 } from "./animate-ui/components/radix/sidebar";
 import { Upload } from "./animate-ui/icons/upload";
 import { ChartNoAxesColumn } from "./animate-ui/icons/chart-no-axes-column";
+import { LogOut } from "./animate-ui/icons/log-out";
 import { useState } from "react";
 
 export function Admin() {
@@ -25,11 +25,11 @@ export function Admin() {
     navigate("/login");
   }
 
-  const [menuItem, setMenuItem] = useState("")
+  const [menuItem, setMenuItem] = useState("stats");
 
   function menuSelected(item) {
-  setMenuItem(item)
-}
+    setMenuItem(item);
+  }
 
   return (
     <>
@@ -40,21 +40,29 @@ export function Admin() {
           <SidebarContent>
             <SidebarMenu>
               <SidebarMenuItem>
-  <SidebarMenuButton tooltip="Documents" onClick={() => menuSelected("documents")}>
-    <Upload animateOnHover /> Documents
-  </SidebarMenuButton>
-</SidebarMenuItem>
-<SidebarMenuItem>
-  <SidebarMenuButton tooltip="Stats" onClick={() => menuSelected("stats")}>
-    <ChartNoAxesColumn animateOnHover />Stats
-  </SidebarMenuButton>
-</SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip="Documents"
+                  onClick={() => menuSelected("documents")}
+                >
+                  <Upload animateOnHover /> Documents
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton
+                  tooltip="Stats"
+                  onClick={() => menuSelected("stats")}
+                >
+                  <ChartNoAxesColumn animateOnHover />
+                  Stats
+                </SidebarMenuButton>
+              </SidebarMenuItem>
             </SidebarMenu>
           </SidebarContent>
 
-          <SidebarFooter>
-            <button onClick={logout}>Logout</button>
-          </SidebarFooter>
+          <SidebarMenuButton tooltip="Logout" onClick={logout}>
+            <LogOut animateOnHover />
+            Logout
+          </SidebarMenuButton>
           <SidebarRail />
         </Sidebar>
 
@@ -62,8 +70,6 @@ export function Admin() {
           <SidebarTrigger />
           {menuItem === "stats" ? <Stats /> : null}
           {menuItem === "documents" ? <Documents /> : null}
-          
-          <div style={{ color: "black" }}>Admin Dashboard</div>
         </SidebarInset>
       </SidebarProvider>
     </>

@@ -1,10 +1,10 @@
 export default function Documents (){
     return(
         <div   style={{
-    border: '2px dashed black',
+    border: '2px dashed white',
     padding: '40px',
     textAlign: 'center',
-    cursor: 'pointer'
+    cursor: 'pointer',
   }}
   onDragOver={(e) => e.preventDefault()}
   onDrop={(e) => {
@@ -15,7 +15,7 @@ export default function Documents (){
 reader.onload = async (e) => {
   const formData = new FormData()
   formData.append("file", file)
-  // εδώ έχεις το text του αρχείου
+
 
   try {
     const response = await fetch("http://localhost:3000/api/ingest", {

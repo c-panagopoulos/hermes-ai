@@ -26,7 +26,9 @@ export function Chat({ messages, isLoading }) {
         <div key={index} className={styles.Message} data-role={role}>
           <Markdown>{content}</Markdown>
         </div>
-      ))}
+      ))}  
+
+
       {isLoading && (
   <div className={styles.TypingIndicator}>
     <Grid size="20" speed="1.5" color="white" />
