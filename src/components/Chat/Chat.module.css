@@ -22,17 +22,17 @@
   font-size: 14px;
   color: #f3f3f3;
 
- &[data-role="user"] {
+&[data-role="user"] {
   align-self: flex-end;
-  background: rgba(99, 179, 237, 0.25);
+  background: rgba(26, 45, 74, 0.95);
   backdrop-filter: blur(8px);
-  border: 1px solid rgba(99, 179, 237, 0.3);
+  border: 1px solid rgba(201, 168, 76, 0.55);
 }
 
 &[data-role="assistant"] {
   align-self: flex-start;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(18, 32, 58, 0.95);
+  border: 1px solid rgba(201, 168, 76, 0.2);
 }
 }
 
@@ -41,9 +41,13 @@
   align-items: center;
 }
 
+
 img {
-  height: 48px;
-  width: 48px;
+  height: 38px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(201, 168, 76, 0.45));
+  opacity: 1;
 }
 
 .Header {
@@ -52,13 +56,22 @@ img {
   align-items: center;
   gap: 8px;
   color: white;
-  padding-bottom: 8px;
+  
 }
 
 .Header header {
   font-weight: 600;
   font-size: 1.1rem;
   letter-spacing: 0.05em;
+}
+
+.Header button {
+  position: absolute;
+  right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+
 }
 
 .TypingIndicator {
@@ -69,4 +82,42 @@ img {
   color: rgba(255, 255, 255, 0.6);
   font-size: 14px;
   font-style: italic;
+}
+
+.endChat {
+    color: rgba(201, 168, 76, 0.6);
+  transition: color 0.2s ease;
+  padding-right: 10px;
+}
+
+.endChat:hover {
+  color: rgba(201, 168, 76, 1);
+}
+
+@keyframes expandLine {
+  from {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+.Divider {
+  width: 60%;
+  height: 1px;
+  margin: 0 auto;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(201, 168, 76, 0.6) 30%,
+    rgba(201, 168, 76, 0.8) 50%,
+    rgba(201, 168, 76, 0.6) 70%,
+    transparent
+  );
+  transform-origin: center;
+  animation: expandLine 0.8s ease-out forwards;
+  margin-bottom: 8px;
 }

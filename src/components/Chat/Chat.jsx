@@ -3,13 +3,15 @@ import styles from "./Chat.module.css";
 import { Grid } from 'ldrs/react'
 import 'ldrs/react/Grid.css'
 import { useEffect, useRef } from 'react';
+import AnimatedContent from '../AnimatedContent';
+import { CircleX } from '../animate-ui/icons/circle-x';
 
 const WELCOME_MESSAGE= {
   role: "assistant",
   content: "Γεια! Πώς μπορώ να σε βοηθήσω;"
 }
 
-export function Chat({ messages, isLoading }) {
+export function Chat({ messages, isLoading, onEndChat }) {
   const messagesEndRef = useRef(null)
 
   useEffect(() => {
@@ -19,13 +21,31 @@ export function Chat({ messages, isLoading }) {
   return (
     <div className={styles.Chat}>
       <div className={styles.Header}>
-        <img src="/chat-bot2.png" alt="logo icon" />
-      <header>Hermes AI Chatbot</header>
-      </div>
+  <header>
+    <img src="/chat-bot6.png" alt="Hermes logo" />
+  </header>
+  
+  <button className={styles.endChat} onClick={onEndChat}>
+    <CircleX animateOnHover color="currentColor" strokeWidth={1.5} />
+  </button>
+</div>
+<div className={styles.Divider} />
       {[WELCOME_MESSAGE, ...messages].map(({ role, content }, index) => (
-        <div key={index} className={styles.Message} data-role={role}>
+        
+          <AnimatedContent
+    key={index}
+    distance={30}
+    direction="vertical"
+    reverse={false}
+    duration={0.4}
+    ease="power3.out"
+    initialOpacity={0}
+    animateOpacity
+    style={{ display: 'flex', justifyContent: role === 'user' ? 'flex-end' : 'flex-start' }}
+  >
+        <div className={styles.Message} data-role={role}>
           <Markdown>{content}</Markdown>
-        </div>
+        </div></AnimatedContent>
       ))}  
 
 

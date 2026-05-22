@@ -15,16 +15,15 @@ export default function Stats () {
     });
     const data = await response.json();
     setStats(data);
-    console.log("stats data:", data);
   } catch (error) {
     console.error("Stats fetch error:", error);
   }
 }
   
-  fetchStats(); // αρχική φόρτωση
+  fetchStats(); 
   const interval = setInterval(fetchStats, 5000); 
 
-  return () => clearInterval(interval); // cleanup
+  return () => clearInterval(interval); 
 }, []);
 
 

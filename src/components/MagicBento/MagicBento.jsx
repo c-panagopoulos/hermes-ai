@@ -6,7 +6,7 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer, BarChart, 
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
-const DEFAULT_GLOW_COLOR = "59, 130, 246";
+const DEFAULT_GLOW_COLOR = "201, 168, 76";
 const MOBILE_BREAKPOINT = 768;
 
 const createParticleElement = (x, y, color = DEFAULT_GLOW_COLOR) => {
@@ -520,7 +520,6 @@ const MagicBento = ({
     ]
   : [];
 
-    console.log("cardData:", cardData);
 
   return (
     <>
@@ -563,7 +562,7 @@ const MagicBento = ({
                 <div className="magic-bento-card__content">
   {card.chart ? (
     <>
-    {console.log("chart data:", stats?.dailyStats)}
+
     <ResponsiveContainer width="100%" height={150} style={{ position: 'relative', zIndex: 50 }}>
       {card.chart === "conversations" ? (
         <LineChart data={stats.dailyStats}>
@@ -576,18 +575,18 @@ const MagicBento = ({
   <Tooltip 
   labelFormatter={(date) => new Date(date).toLocaleDateString('el-GR', { day: '2-digit', month: '2-digit' })}
   contentStyle={{ 
-    backgroundColor: '#1a1a2e', 
-    border: '1px solid #3b82f6',
+    backgroundColor: '#080E18', 
+    border: '1px solid rgba(201, 168, 76, 0.4)',
     borderRadius: '8px',
     color: 'white',
     fontSize: '11px',
     padding: '4px 8px'
   }} 
 />
-  <Line type="monotone" dataKey="total" stroke="#3b82f6" strokeWidth={2} dot={false} />
+  <Line type="monotone" dataKey="total" stroke="#C9A84C" strokeWidth={2} dot={false} />
 </LineChart>
       ) : (
-        <BarChart data={stats.dailyStats}>
+        <BarChart data={stats.dailyStats} style={{ cursor: 'default' }}>
   <XAxis 
     dataKey="date" 
     tick={{ fill: 'white', fontSize: 10 }}
@@ -605,7 +604,7 @@ const MagicBento = ({
     padding: '4px 8px'
   }} 
 />
-  <Bar dataKey="escalated" fill="#3b82f6" />
+  <Bar dataKey="escalated" fill="#C9A84C" />
 </BarChart>
       )}
     </ResponsiveContainer>

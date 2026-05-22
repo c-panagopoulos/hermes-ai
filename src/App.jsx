@@ -5,27 +5,12 @@ import styles from "./App.module.css";
 import { StarsBackground } from "./components/animate-ui/components/backgrounds/stars";
 
 function App() {
-  useEffect(() => {
-    async function fetchHistory() {
-      try {
-        const response = await fetch("http://localhost:3000/api/history", {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await response.json();
-        setMessages(data);
-      } catch (error) {
-        console.log("failed to fetch history");
-      }
-    }
-    fetchHistory();
-  }, []);
 
   const [sessionId, setSessionId] = useState(null);
 
   useEffect(() => {
     async function startSession() {
-      const response = await fetch("http://localhost:3000/api/session/start", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/session/start`, {
         method: "POST",
       });
       const data = await response.json();
@@ -38,59 +23,94 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [isStreaming, setIsStreaming] = useState(false);
+
   const [hasEscalated, setHasEscalated] = useState(false);
 
   function addMessage(message) {
     setMessages((prevMessages) => [...prevMessages, message]);
   }
 
-  async function handleContentSend(content) {
-    addMessage({ content, role: "user" });
-    setIsLoading(true);
-    try {
-      const response = await fetch("http://localhost:3000/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ content, history: messages, sessionId }),
-      });
-      const data = await response.json();
-      addMessage({ content: data.message, role: "assistant" });
+  
+async function handleContentSend(content) {
+  addMessage({ content, role: "user" });
+  setIsLoading(true);
+  setIsStreaming(true); 
 
-      if (data.escalate) {
-        setHasEscalated(true);
-        const fullHistory = [
-          ...messages,
-          { content, role: "user" },
-          { content: data.message, role: "assistant" },
-        ];
-        try {
-          await fetch(
-            "https://fedora.osiris-darter.ts.net:8444/webhook/fbecaa32-bac1-44f8-8dfe-56c6be91fd3c",
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                message: data.message,
-                history: fullHistory,
-              }),
-            },
-          );
-        } catch (err) {
-          console.error("Webhook failed:", err);
+  try {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content, history: messages, sessionId }),
+    });
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let fullMessage = "";
+    let escalate = false;
+    let firstToken = true;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      const text = decoder.decode(value);
+      const lines = text.split("\n").filter(line => line.startsWith("data: "));
+
+      for (const line of lines) {
+        const data = JSON.parse(line.replace("data: ", ""));
+
+        if (data.done) {
+          escalate = data.escalate;
+        } else if (data.token) {
+          fullMessage += data.token;
+
+          if (firstToken) {
+            setIsLoading(false); // κρύβει το loading animation
+            addMessage({ content: fullMessage, role: "assistant" }); // εμφανίζει bubble
+            firstToken = false;
+          } else {
+            setMessages(prev => {
+              const updated = [...prev];
+              updated[updated.length - 1] = { content: fullMessage, role: "assistant" };
+              return updated;
+            });
+          }
         }
       }
-    } catch (error) {
-      addMessage({
-        content: "Sorry, I couldn't process your request. Please try again!",
-        role: "system",
-      });
-    } finally {
-      setIsLoading(false);
     }
+
+    if (escalate) {
+      setHasEscalated(true);
+      const fullHistory = [
+        ...messages,
+        { content, role: "user" },
+        { content: fullMessage, role: "assistant" },
+      ];
+      try {
+        await fetch(`${import.meta.env.VITE_WEBHOOK_URL}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: fullMessage, history: fullHistory }),
+        });
+      } catch (err) {
+        console.error("Webhook failed:", err);
+      }
+    }
+
+  } catch (error) {
+    addMessage({
+      content: "Sorry, I couldn't process your request. Please try again!",
+      role: "system",
+    });
+  } finally {
+    setIsLoading(false);
+    setIsStreaming(false);
   }
+}
 
 async function handleEndChat() {
-  await fetch("http://localhost:3000/api/session/end", {
+  await fetch(`${import.meta.env.VITE_API_URL}/api/session/end`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ sessionId, escalated: hasEscalated }),
@@ -100,7 +120,7 @@ async function handleEndChat() {
   setSessionId(null);
   setHasEscalated(false);
   // Ξεκίνα νέο session
-  const response = await fetch("http://localhost:3000/api/session/start", {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/api/session/start`, {
     method: "POST",
   });
   const data = await response.json();
@@ -112,25 +132,14 @@ async function handleEndChat() {
       <StarsBackground
         starColor="#FFF"
         className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_100%)]"
+        speed={90}
       />
       <div className={styles.App} style={{ width: "90%", maxWidth: "900px" }}>
         <header className={styles.Header}></header>
         <div className={styles.ChatContainer}>
-          <Chat messages={messages} isLoading={isLoading} />
+          <Chat messages={messages} isLoading={isLoading} onEndChat={handleEndChat} />
         </div>
-        <Controls isDisabled={isLoading} onSend={handleContentSend} />
-        <button
-          onClick={handleEndChat}
-          style={{
-            position: "relative",
-            zIndex: 10,
-            color: "white",
-            background: "red",
-            padding: "8px 16px",
-          }}
-        >
-          End Chat
-        </button>
+        <Controls isDisabled={isLoading || isStreaming} onSend={handleContentSend} />
       </div>
     </>
   );

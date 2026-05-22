@@ -1,9 +1,9 @@
 :root {
-  --purple-primary: rgba(59, 130, 246, 1);
-  --purple-glow: rgba(59, 130, 246, 0.2);
-  --purple-border: rgba(59, 130, 246, 0.8);
-  --border-color: #1e3a5f;
-  --background-dark: #111827;
+  --purple-primary: rgba(201, 168, 76, 1);
+  --purple-glow: rgba(201, 168, 76, 0.15);
+  --purple-border: rgba(201, 168, 76, 0.6);
+  --border-color: rgba(201, 168, 76, 0.2);
+  --background-dark: #080E18;
 }
 
 .card-grid {
@@ -147,8 +147,8 @@
   padding: 6px;
   background: radial-gradient(
     var(--glow-radius) circle at var(--glow-x) var(--glow-y),
-    rgba(59, 130, 246, calc(var(--glow-intensity) * 0.8)) 0%,
-    rgba(59, 130, 246, calc(var(--glow-intensity) * 0.4)) 30%,
+    rgba(201, 168, 76, calc(var(--glow-intensity) * 0.8)) 0%,
+    rgba(201, 168, 76, calc(var(--glow-intensity) * 0.4)) 30%,
     transparent 60%
   );
   border-radius: inherit;
@@ -188,7 +188,7 @@
   left: -2px;
   right: -2px;
   bottom: -2px;
-  background: rgba(59, 130, 246, 0.2);
+  background: rgba(201, 168, 76, 0.15);
   border-radius: 50%;
   z-index: -1;
 }

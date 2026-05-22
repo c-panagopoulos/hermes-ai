@@ -41,7 +41,7 @@ export function Admin() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  tooltip="Documents"
+                  tooltip={{ children: "Documents", side: "right" }}
                   onClick={() => menuSelected("documents")}
                 >
                   <Upload animateOnHover /> Documents
@@ -49,7 +49,7 @@ export function Admin() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton
-                  tooltip="Stats"
+                  tooltip={{ children: "Stats", side: "right" }}
                   onClick={() => menuSelected("stats")}
                 >
                   <ChartNoAxesColumn animateOnHover />
@@ -59,7 +59,7 @@ export function Admin() {
             </SidebarMenu>
           </SidebarContent>
 
-          <SidebarMenuButton tooltip="Logout" onClick={logout}>
+          <SidebarMenuButton tooltip={{ children: "Logout", side: "right" }}  onClick={logout}>
             <LogOut animateOnHover />
             Logout
           </SidebarMenuButton>
