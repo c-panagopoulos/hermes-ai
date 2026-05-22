@@ -2,11 +2,12 @@ import styles from "./Controls.module.css";
 import TextareaAutosize from "react-textarea-autosize";
 import { useState, useRef, useEffect } from "react";
 
-import { Send } from "../animate-ui/icons/send";
+import { SendIcon } from "../animate-ui/icons/send";
 
 export function Controls({ isDisabled = false, onSend }) {
   const textAreaRef = useRef(null)
   const [content, setContent] = useState("");
+const [sendAnimate, setSendAnimate] = useState(false);
 
   useEffect(()=> {
     if (!isDisabled) {
@@ -18,12 +19,14 @@ export function Controls({ isDisabled = false, onSend }) {
     setContent(event.target.value);
   }
 
-  function handleContentSend() {
-    if (content.length > 0) {
-      onSend(content);
-      setContent("");
-    }
+function handleContentSend() {
+  if (content.length > 0) {
+    setSendAnimate(true);
+    setTimeout(() => setSendAnimate(false), 600);
+    onSend(content);
+    setContent("");
   }
+}
 
   function handleEnterPress(event) {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -37,7 +40,7 @@ export function Controls({ isDisabled = false, onSend }) {
       <div className={styles.TextAreaContainer}>
         <TextareaAutosize
           className={styles.TextArea}
-          placeholder="Γράψε το ερώτημά σου..."
+          placeholder="Type your message..."
           ref={textAreaRef}
           value={content}
           onChange={handleContentChange}
@@ -51,7 +54,11 @@ export function Controls({ isDisabled = false, onSend }) {
         disabled={isDisabled}
         onClick={handleContentSend}
         >
-        <Send animateOnHover />
+        <SendIcon
+  animate={sendAnimate}
+  color="currentColor"
+  strokeWidth={1.5}
+/>
       </button>
     </div>
   );

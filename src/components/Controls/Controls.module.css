@@ -57,7 +57,7 @@ z-index: 10;
 }
 
 .Button svg {
-  stroke: #f3f3f3;
+  stroke: rgba(201, 168, 76, 0.9);
   fill: none;
 }
 
