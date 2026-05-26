@@ -12,10 +12,10 @@ import {
   SidebarMenuButton,
   SidebarRail,
   SidebarTrigger,
-} from "./animate-ui/components/radix/sidebar";
-import { Upload } from "./animate-ui/icons/upload";
-import { ChartNoAxesColumn } from "./animate-ui/icons/chart-no-axes-column";
-import { LogOut } from "./animate-ui/icons/log-out";
+} from "../animate-ui/components/radix/sidebar";
+import { Upload } from "../animate-ui/icons/upload";
+import { ChartNoAxesColumn } from "../animate-ui/icons/chart-no-axes-column";
+import { LogOut } from "../animate-ui/icons/log-out";
 import { useState } from "react";
 
 export function Admin() {
@@ -59,7 +59,10 @@ export function Admin() {
             </SidebarMenu>
           </SidebarContent>
 
-          <SidebarMenuButton tooltip={{ children: "Logout", side: "right" }}  onClick={logout}>
+          <SidebarMenuButton
+            tooltip={{ children: "Logout", side: "right" }}
+            onClick={logout}
+          >
             <LogOut animateOnHover />
             Logout
           </SidebarMenuButton>

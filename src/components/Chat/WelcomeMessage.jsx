@@ -2,7 +2,7 @@ import TextRotate from "../fancy/text/text-rotate";
 import styles from "./Chat.module.css";
 
 const greetings = [
-  "Hello! How can I help you?",  // πρώτο = default
+  "Hello! How can I help you?",
   "Γεια! Πώς μπορώ να σε βοηθήσω;",
   "Hola! ¿Cómo puedo ayudarte?",
   "Bonjour! Comment puis-je vous aider?",

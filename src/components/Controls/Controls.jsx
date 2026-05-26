@@ -5,28 +5,28 @@ import { useState, useRef, useEffect } from "react";
 import { SendIcon } from "../animate-ui/icons/send";
 
 export function Controls({ isDisabled = false, onSend }) {
-  const textAreaRef = useRef(null)
+  const textAreaRef = useRef(null);
   const [content, setContent] = useState("");
-const [sendAnimate, setSendAnimate] = useState(false);
+  const [sendAnimate, setSendAnimate] = useState(false);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!isDisabled) {
-      textAreaRef.current.focus()
+      textAreaRef.current.focus();
     }
-  }, [isDisabled])
+  }, [isDisabled]);
 
   function handleContentChange(event) {
     setContent(event.target.value);
   }
 
-function handleContentSend() {
-  if (content.length > 0) {
-    setSendAnimate(true);
-    setTimeout(() => setSendAnimate(false), 600);
-    onSend(content);
-    setContent("");
+  function handleContentSend() {
+    if (content.length > 0) {
+      setSendAnimate(true);
+      setTimeout(() => setSendAnimate(false), 600);
+      onSend(content);
+      setContent("");
+    }
   }
-}
 
   function handleEnterPress(event) {
     if (event.key === "Enter" && !event.shiftKey) {
@@ -50,18 +50,18 @@ function handleContentSend() {
           maxRows={4}
         />
       </div>
-      <button className={styles.Button}
+      <button
+        className={styles.Button}
         disabled={isDisabled}
         onClick={handleContentSend}
-        >
+        aria-label="Send message"
+      >
         <SendIcon
-  animate={sendAnimate}
-  color="currentColor"
-  strokeWidth={1.5}
-/>
+          animate={sendAnimate}
+          color="currentColor"
+          strokeWidth={1.5}
+        />
       </button>
     </div>
   );
 }
-
-

@@ -3,13 +3,15 @@ import styles from "./Chat.module.css";
 import { Grid } from "ldrs/react";
 import "ldrs/react/Grid.css";
 import { useEffect, useRef } from "react";
-import AnimatedContent from "../AnimatedContent";
+import AnimatedContent from "../ui/AnimatedContent";
 import { CircleX } from "../animate-ui/icons/circle-x";
 import WelcomeMessage from "./WelcomeMessage";
 
 export function Chat({ messages, isLoading, onEndChat }) {
   const messagesEndRef = useRef(null);
   const hasStarted = messages.length > 0;
+
+  const chatRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -22,7 +24,11 @@ export function Chat({ messages, isLoading, onEndChat }) {
           <img src="/chat-bot6.png" alt="Hermes logo" />
         </header>
 
-        <button className={styles.endChat} onClick={onEndChat}>
+        <button
+          className={styles.endChat}
+          onClick={onEndChat}
+          aria-label="End chat"
+        >
           <CircleX animateOnHover color="currentColor" strokeWidth={1.5} />
         </button>
       </div>

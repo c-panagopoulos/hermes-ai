@@ -5,14 +5,16 @@ import styles from "./App.module.css";
 import { StarsBackground } from "./components/animate-ui/components/backgrounds/stars";
 
 function App() {
-
   const [sessionId, setSessionId] = useState(null);
 
   useEffect(() => {
     async function startSession() {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/session/start`, {
-        method: "POST",
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/session/start`,
+        {
+          method: "POST",
+        },
+      );
       const data = await response.json();
       setSessionId(data.sessionId);
     }
@@ -31,101 +33,110 @@ function App() {
     setMessages((prevMessages) => [...prevMessages, message]);
   }
 
-  
-async function handleContentSend(content) {
-  addMessage({ content, role: "user" });
-  setIsLoading(true);
-  setIsStreaming(true); 
+  async function handleContentSend(content) {
+    addMessage({ content, role: "user" });
+    setIsLoading(true);
+    setIsStreaming(true);
 
-  try {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ content, history: messages, sessionId }),
-    });
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ content, history: messages, sessionId }),
+      });
 
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let fullMessage = "";
-    let escalate = false;
-    let firstToken = true;
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let fullMessage = "";
+      let escalate = false;
+      let firstToken = true;
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-      const text = decoder.decode(value);
-      const lines = text.split("\n").filter(line => line.startsWith("data: "));
+        const text = decoder.decode(value);
+        const lines = text
+          .split("\n")
+          .filter((line) => line.startsWith("data: "));
 
-      for (const line of lines) {
-        const data = JSON.parse(line.replace("data: ", ""));
+        for (const line of lines) {
+          const data = JSON.parse(line.replace("data: ", ""));
 
-        if (data.done) {
-          escalate = data.escalate;
-        } else if (data.token) {
-          fullMessage += data.token;
+          if (data.done) {
+            escalate = data.escalate;
+          } else if (data.token) {
+            fullMessage += data.token;
 
-          if (firstToken) {
-            setIsLoading(false); // κρύβει το loading animation
-            addMessage({ content: fullMessage, role: "assistant" }); // εμφανίζει bubble
-            firstToken = false;
-          } else {
-            setMessages(prev => {
-              const updated = [...prev];
-              updated[updated.length - 1] = { content: fullMessage, role: "assistant" };
-              return updated;
-            });
+            if (firstToken) {
+              setIsLoading(false);
+              addMessage({ content: fullMessage, role: "assistant" });
+              firstToken = false;
+            } else {
+              setMessages((prev) => {
+                const updated = [...prev];
+                updated[updated.length - 1] = {
+                  content: fullMessage,
+                  role: "assistant",
+                };
+                return updated;
+              });
+            }
           }
         }
       }
-    }
 
-    if (escalate) {
-      setHasEscalated(true);
-      const fullHistory = [
-        ...messages,
-        { content, role: "user" },
-        { content: fullMessage, role: "assistant" },
-      ];
-      try {
-        await fetch(`${import.meta.env.VITE_WEBHOOK_URL}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: fullMessage, history: fullHistory }),
-        });
-      } catch (err) {
-        console.error("Webhook failed:", err);
+      if (escalate) {
+        setHasEscalated(true);
+        const fullHistory = [
+          ...messages,
+          { content, role: "user" },
+          { content: fullMessage, role: "assistant" },
+        ];
+        try {
+          await fetch(`${import.meta.env.VITE_WEBHOOK_URL}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              message: fullMessage,
+              history: fullHistory,
+            }),
+          });
+        } catch (err) {
+          console.error("Webhook failed:", err);
+        }
       }
+    } catch (error) {
+      addMessage({
+        content: "Sorry, I couldn't process your request. Please try again!",
+        role: "system",
+      });
+    } finally {
+      setIsLoading(false);
+      setIsStreaming(false);
     }
-
-  } catch (error) {
-    addMessage({
-      content: "Sorry, I couldn't process your request. Please try again!",
-      role: "system",
-    });
-  } finally {
-    setIsLoading(false);
-    setIsStreaming(false);
   }
-}
 
-async function handleEndChat() {
-  await fetch(`${import.meta.env.VITE_API_URL}/api/session/end`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ sessionId, escalated: hasEscalated }),
-  });
-  // Reset state
-  setMessages([]);
-  setSessionId(null);
-  setHasEscalated(false);
-  // Ξεκίνα νέο session
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/api/session/start`, {
-    method: "POST",
-  });
-  const data = await response.json();
-  setSessionId(data.sessionId);
-}
+  async function handleEndChat() {
+    await fetch(`${import.meta.env.VITE_API_URL}/api/session/end`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ sessionId, escalated: hasEscalated }),
+    });
+
+    setMessages([]);
+    setSessionId(null);
+    setHasEscalated(false);
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/api/session/start`,
+      {
+        method: "POST",
+      },
+    );
+    const data = await response.json();
+    setSessionId(data.sessionId);
+  }
 
   return (
     <>
@@ -137,9 +148,16 @@ async function handleEndChat() {
       <div className={styles.App} style={{ width: "90%", maxWidth: "900px" }}>
         <header className={styles.Header}></header>
         <div className={styles.ChatContainer}>
-          <Chat messages={messages} isLoading={isLoading} onEndChat={handleEndChat} />
+          <Chat
+            messages={messages}
+            isLoading={isLoading}
+            onEndChat={handleEndChat}
+          />
         </div>
-        <Controls isDisabled={isLoading || isStreaming} onSend={handleContentSend} />
+        <Controls
+          isDisabled={isLoading || isStreaming}
+          onSend={handleContentSend}
+        />
       </div>
     </>
   );

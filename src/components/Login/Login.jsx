@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { StarsBackground } from "./animate-ui/components/backgrounds/stars";
+import { StarsBackground } from "../animate-ui/components/backgrounds/stars";
 
 export function Login() {
   const [username, setUsername] = useState("");
@@ -11,7 +11,7 @@ export function Login() {
   async function handleLogin(e) {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:3000/api/login", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -35,7 +35,7 @@ export function Login() {
       className="fixed inset-0 z-0 bg-[radial-gradient(ellipse_at_bottom,_#262626_0%,_#000_100%)]"
     />
     <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-8 w-full max-w-md">
+      <div className="bg-[#111827] backdrop-blur-md border border-[rgba(201,168,76,0.2)] rounded-2xl p-8 w-full max-w-md">
         <h1 className="text-white text-2xl font-semibold mb-6 text-center">Admin Login</h1>
         {error && <p className="text-red-400 text-sm mb-4 text-center">{error}</p>}
         <form onSubmit={handleLogin} className="flex flex-col gap-4">
@@ -44,18 +44,18 @@ export function Login() {
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 outline-none"
+            className="bg-[#111827] border border-[rgba(201,168,76,0.2)] rounded-xl px-4 py-3 text-white placeholder-white/40 outline-none"
           />
           <input
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/40 outline-none"
+            className="bg-[#111827] border border-[rgba(201,168,76,0.2)] rounded-xl px-4 py-3 text-white placeholder-white/40 outline-none"
           />
           <button
             type="submit"
-            className="bg-blue-500/30 border border-blue-400/30 text-white rounded-xl py-3 font-medium hover:bg-blue-500/50 transition-colors"
+            className="bg-[rgba(201,168,76,0.15)] border border-[rgba(201,168,76,0.35)] text-white rounded-xl py-3 font-medium hover:bg-[rgba(201,168,76,0.28)] transition-colors"
           >
             Login
           </button>
