@@ -22,9 +22,12 @@ export default function WelcomeMessage({ hasStarted }) {
             auto={true}
             rotationInterval={5000}
             splitBy="words"
-            staggerDuration={0.1}
+            staggerDuration={0.08}
             staggerFrom="first"
-            transition={{ type: "spring", damping: 50, stiffness: 150 }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ type: "tween", ease: "easeOut", duration: 0.4 }}
           />
         )}
       </div>
