@@ -21,7 +21,7 @@ export function Chat({ messages, isLoading, onEndChat }) {
     <div className={styles.Chat}>
       <div className={styles.Header}>
         <header>
-          <img src="/chat-bot6.png" alt="Hermes logo" />
+          <img src="/hermes.webp" alt="Hermes logo" />
         </header>
 
         <button
