@@ -97,6 +97,8 @@ The backend is not public, but these are the non-trivial parts that were built f
 ### RAG Pipeline
 Documents (PDF or plain text) are chunked using a sentence-aware algorithm with configurable size and overlap to avoid cutting mid-sentence. Each chunk is embedded with `text-embedding-3-small` and stored in PostgreSQL using the `pgvector` extension. At query time, the user message is embedded and the top-k most similar chunks (above a cosine similarity threshold) are injected into the system prompt as context.
 
+The knowledge base used to train this instance is included in the [`knowledge-base/`](knowledge-base/) directory — two FAQ files covering Lumio's policies, shipping, returns, and account management, in both English and Greek.
+
 ### Streaming over SSE
 The `/api/chat` endpoint streams the LLM response token by token using the OpenAI-compatible streaming API (works with both Ollama and Groq). Each token is serialized as an SSE `data:` event. A final `done` event carries the escalation flag. The frontend consumes this with the Streams API (`response.body.getReader()`), appending tokens directly to the last message in state — no buffering, no delay.
 
