@@ -139,7 +139,7 @@ Admin routes (`/api/ingest`, `/api/stats`) are protected with JWT. Passwords are
 | 3D / WebGL | OGL (stars background) |
 | Markdown | react-markdown |
 | Icons | lucide-react, @untitledui/icons |
-| Font | Geist Variable |
+| Fonts | Montserrat (Google Fonts), Geist Variable |
 | Deployment | Vercel |
 
 ### Backend
