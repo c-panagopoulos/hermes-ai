@@ -168,7 +168,7 @@ Admin routes (`/api/ingest`, `/api/stats`) are protected with JWT. Passwords are
 ### Installation
 
 ```bash
-git clone https://github.com/your-username/hermes-frontend.git
+git clone https://github.com/c-panagopoulos/hermes-ai.git
 cd hermes-frontend
 pnpm install
 ```
