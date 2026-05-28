@@ -20,7 +20,7 @@ The backend is private, but this README covers the full architecture so you can 
 
 **[hermes.cpanagopoulos.dev](https://hermes.cpanagopoulos.dev)**
 
-The chatbot connects to the private Hermes backend running on a cloud server.
+Deployed on Vercel with a custom Cloudflare domain. The chatbot connects to the private Hermes backend running on a cloud server.
 
 ---
 
