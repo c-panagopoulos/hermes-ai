@@ -9,11 +9,14 @@ export function Controls({ isDisabled = false, onSend }) {
   const [content, setContent] = useState("");
   const [sendAnimate, setSendAnimate] = useState(false);
 
-  useEffect(() => {
-    if (!isDisabled) {
+useEffect(() => {
+  if (!isDisabled) {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (!isMobile) {
       textAreaRef.current.focus();
     }
-  }, [isDisabled]);
+  }
+}, [isDisabled]);
 
   function handleContentChange(event) {
     setContent(event.target.value);
