@@ -43,7 +43,7 @@ Deployed on Vercel with a custom Cloudflare domain. The chatbot connects to the 
 
 | Stats Dashboard | Document Ingestion |
 |---|---|
-| ![Admin stats dashboard](.github/assets/admin-stats.png) | ![Document upload](.github/assets/admin-document-upload.png) |
+| ![Admin stats dashboard](.github/assets/admin-stats.png) | ![Document upload](.github/assets/admin-document-upload-v2.png) |
 
 - **Stats dashboard** — bento-grid layout showing total sessions, escalation rate, containment rate, average messages per session, average handle time, and a 30-day daily chart
 - **Document ingestion** — drag-and-drop interface to upload PDF or TXT files directly into the RAG knowledge base
