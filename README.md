@@ -4,6 +4,8 @@ Hermes is a production-ready AI chatbot built for **Lumio**, a fictional e-comme
 
 The backend is private, but this README covers the full architecture so you can understand how everything fits together.
 
+![Hermes chat interface](.github/assets/hermes-homepage.png)
+
 ---
 
 ## Live Demo
@@ -15,6 +17,9 @@ The backend is private, but this README covers the full architecture so you can 
 ## Features
 
 ### Chat Interface
+
+![Token streaming in action](.github/assets/streaming.gif)
+
 - **Real-time token streaming** — responses appear word-by-word via Server-Sent Events, no waiting for the full reply
 - **Markdown rendering** — the AI can respond with formatted lists, bold text, and structured instructions
 - **Session management** — each conversation gets a unique session ID, tracked on the backend
@@ -24,11 +29,19 @@ The backend is private, but this README covers the full architecture so you can 
 - **End chat** — clears the session and starts a fresh one with a single click
 
 ### Admin Panel (JWT-protected)
+
+| Stats Dashboard | Document Ingestion |
+|---|---|
+| ![Admin stats dashboard](.github/assets/admin-stats.png) | ![Document upload](.github/assets/admin-document-upload.png) |
+
 - **Stats dashboard** — bento-grid layout showing total sessions, escalation rate, containment rate, average messages per session, average handle time, and a 30-day daily chart
 - **Document ingestion** — drag-and-drop interface to upload PDF or TXT files directly into the RAG knowledge base
 - **Live polling** — stats refresh every 30 seconds automatically
 
 ### Escalation System
+
+![Escalation flow](.github/assets/escalation.gif)
+
 The AI detects when a customer mentions lawyers, formal complaints, or regulatory bodies (ΡΑΑΕΥ) and flags the conversation for human review. When escalation is triggered:
 1. The frontend fires a webhook with the full conversation history
 2. The backend marks the session as escalated in the database
@@ -198,12 +211,6 @@ src/
 ├── hooks/                     # Reusable React hooks
 └── lib/                       # Utility functions
 ```
-
----
-
-## Screenshots
-
-> Coming soon.
 
 ---
 
