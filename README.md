@@ -64,38 +64,38 @@ The AI detects when a customer mentions lawyers or formal complaints and flags t
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│                     Browser                          │
+│                     Browser                         │
 │  React 19 + Vite  ──────────  Admin Panel           │
 │  (this repo)            JWT auth + stats + ingest   │
 └────────────────┬────────────────────────────────────┘
                  │  REST + SSE
 ┌────────────────▼────────────────────────────────────┐
-│              Hermes Backend  (private)               │
-│                                                      │
-│  Express 5                                           │
-│    ├── POST /api/chat          → SSE stream          │
-│    ├── POST /api/session/start → UUID session        │
-│    ├── POST /api/session/end   → mark ended          │
-│    ├── POST /api/ingest        → RAG ingestion       │
-│    ├── GET  /api/stats         → analytics           │
-│    ├── POST /api/register      → admin auth          │
-│    └── POST /api/login         → JWT issue           │
-│                                                      │
-│  RAG Pipeline                                        │
-│    ├── PDF + TXT parsing (pdfjs-dist)                │
-│    ├── Sentence-aware chunking with overlap          │
-│    ├── OpenAI text-embedding-3-small                 │
-│    └── pgvector cosine similarity search             │
-│                                                      │
-│  LLM Layer                                           │
+│              Hermes Backend  (private)              │
+│                                                     │
+│  Express 5                                          │
+│    ├── POST /api/chat          → SSE stream         │
+│    ├── POST /api/session/start → UUID session       │
+│    ├── POST /api/session/end   → mark ended         │
+│    ├── POST /api/ingest        → RAG ingestion      │
+│    ├── GET  /api/stats         → analytics          │
+│    ├── POST /api/register      → admin auth         │
+│    └── POST /api/login         → JWT issue          │
+│                                                     │
+│  RAG Pipeline                                       │
+│    ├── PDF + TXT parsing (pdfjs-dist)               │
+│    ├── Sentence-aware chunking with overlap         │
+│    ├── OpenAI text-embedding-3-small                │
+│    └── pgvector cosine similarity search            │
+│                                                     │
+│  LLM Layer                                          │
 │    ├── Groq (llama-3.1-8b-instant) — production     │
-│    └── Ollama (local GGUF model) — development       │
-│                                                      │
-│  PostgreSQL                                          │
-│    ├── sessions  (id, created_at, ended_at,          │
-│    │              message_count, escalated)          │
-│    ├── messages  (role, content, session_id)         │
-│    └── documents (content, embedding, source)        │
+│    └── Ollama (local GGUF model) — development      │
+│                                                     │
+│  PostgreSQL                                         │
+│    ├── sessions  (id, created_at, ended_at,         │
+│    │              message_count, escalated)         │
+│    ├── messages  (role, content, session_id)        │
+│    └── documents (content, embedding, source)       │
 └─────────────────────────────────────────────────────┘
 ```
 
