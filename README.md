@@ -1,5 +1,13 @@
 # Hermes — AI Customer Service Chatbot
 
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white&labelColor=20232a)
+![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white&labelColor=1a1a2e)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white&labelColor=0f172a)
+![Node.js](https://img.shields.io/badge/Node.js-Express_5-339933?logo=node.js&logoColor=white&labelColor=1a1a1a)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-pgvector-4169E1?logo=postgresql&logoColor=white&labelColor=1a1a2e)
+![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-f59e0b)
+
 Hermes is a production-ready AI chatbot built for **Lumio**, a fictional e-commerce platform. It combines a polished React frontend with a custom Node.js backend that implements Retrieval-Augmented Generation (RAG), token streaming over SSE, session tracking, and automatic human-handoff escalation.
 
 The backend is private, but this README covers the full architecture so you can understand how everything fits together.
