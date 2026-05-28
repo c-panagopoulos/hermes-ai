@@ -24,13 +24,15 @@ export function Chat({ messages, isLoading, onEndChat }) {
           <img src="/hermes.webp" alt="Hermes logo" />
         </header>
 
-        <button
-          className={styles.endChat}
-          onClick={onEndChat}
-          aria-label="End chat"
-        >
-          <CircleX animateOnHover color="currentColor" strokeWidth={1.5} />
-        </button>
+        {hasStarted ? (
+          <button
+            className={styles.endChat}
+            onClick={onEndChat}
+            aria-label="End chat"
+          >
+            <CircleX animateOnHover color="currentColor" strokeWidth={1.5} />
+          </button>
+        ) : null}
       </div>
       <div className={styles.Divider} />
 
@@ -60,7 +62,7 @@ export function Chat({ messages, isLoading, onEndChat }) {
       {isLoading && (
         <div className={styles.TypingIndicator}>
           <Grid size="20" speed="1.5" color="white" />
-          <span>Αναζητώ απάντηση...</span>
+          <span>Hermes is thinking...</span>
         </div>
       )}
       <div ref={messagesEndRef} />
