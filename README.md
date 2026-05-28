@@ -18,7 +18,9 @@ The backend is private, but this README covers the full architecture so you can 
 
 ## Live Demo
 
-> Deployed on Vercel. The chatbot connects to the private Hermes backend running on a cloud server.
+**[hermes.cpanagopoulos.dev](https://hermes.cpanagopoulos.dev)**
+
+The chatbot connects to the private Hermes backend running on a cloud server.
 
 ---
 
@@ -35,6 +37,7 @@ The backend is private, but this README covers the full architecture so you can 
 - **Animated stars background** — WebGL-powered starfield rendered with OGL
 - **Auto-scroll** — chat window follows new messages smoothly
 - **End chat** — clears the session and starts a fresh one with a single click
+- **Multilingual** — responds in the language the customer uses; optimised for English and Greek
 
 ### Admin Panel (JWT-protected)
 
@@ -50,7 +53,7 @@ The backend is private, but this README covers the full architecture so you can 
 
 ![Escalation flow](.github/assets/escalation.gif)
 
-The AI detects when a customer mentions lawyers, formal complaints, or regulatory bodies (ΡΑΑΕΥ) and flags the conversation for human review. When escalation is triggered:
+The AI detects when a customer mentions lawyers or formal complaints and flags the conversation for human review. When escalation is triggered:
 1. The frontend fires a webhook with the full conversation history
 2. The backend marks the session as escalated in the database
 3. The UI reflects the escalated state
@@ -114,7 +117,7 @@ The `/api/chat` endpoint streams the LLM response token by token using the OpenA
 Every chat session gets a UUID. Messages are written to the database in real time (user message before LLM call, assistant message after). The `sessions` table records creation time, end time, message count, and escalation status, which feeds the admin stats dashboard.
 
 ### Escalation & Webhook
-A regex runs on every completed LLM response. If it matches escalation keywords (`lawyer`, `complaint`, `ΡΑΑΕΥ`, `human agent`, etc.), the backend sets `escalate: true` in the SSE done event. The frontend then POSTs the full conversation history to a configurable webhook URL (e.g. a Zapier/Make automation or a Slack integration).
+A regex runs on every completed LLM response. If it matches escalation keywords (`lawyer`, `complaint`, `human agent`, etc.), the backend sets `escalate: true` in the SSE done event. The frontend then POSTs the full conversation history to a configurable webhook URL (e.g. an n8n or Zapier automation).
 
 ### Rate Limiting
 Two layers of rate limiting via `express-rate-limit`: a general 50 req / 15 min limit on all `/api` routes, and a stricter 10 req / 1 min limit on `/api/chat` specifically.
