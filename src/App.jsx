@@ -86,7 +86,7 @@ function App() {
         }
       }
 
-      if (escalate) {
+      if (escalate && import.meta.env.VITE_WEBHOOK_URL) {
         setHasEscalated(true);
         const fullHistory = [
           ...messages,
