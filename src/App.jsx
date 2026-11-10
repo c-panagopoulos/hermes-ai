@@ -109,7 +109,7 @@ function App() {
           }
         }
       }
-    } catch (error) {
+    } catch {
       addMessage({
         content: "Sorry, I couldn't process your request. Please try again!",
         role: "system",
