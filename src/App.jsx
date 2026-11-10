@@ -86,24 +86,27 @@ function App() {
         }
       }
 
-      if (escalate && import.meta.env.VITE_WEBHOOK_URL) {
+      if (escalate) {
         setHasEscalated(true);
-        const fullHistory = [
-          ...messages,
-          { content, role: "user" },
-          { content: fullMessage, role: "assistant" },
-        ];
-        try {
-          await fetch(`${import.meta.env.VITE_WEBHOOK_URL}`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              message: fullMessage,
-              history: fullHistory,
-            }),
-          });
-        } catch (err) {
-          console.error("Webhook failed:", err);
+        // Webhook is skipped when VITE_WEBHOOK_URL is unset (n8n temporarily disabled).
+        if (import.meta.env.VITE_WEBHOOK_URL) {
+          const fullHistory = [
+            ...messages,
+            { content, role: "user" },
+            { content: fullMessage, role: "assistant" },
+          ];
+          try {
+            await fetch(`${import.meta.env.VITE_WEBHOOK_URL}`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                message: fullMessage,
+                history: fullHistory,
+              }),
+            });
+          } catch (err) {
+            console.error("Webhook failed:", err);
+          }
         }
       }
     } catch (error) {

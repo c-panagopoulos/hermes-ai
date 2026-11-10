@@ -58,6 +58,8 @@ The AI detects when a customer mentions lawyers or formal complaints and flags t
 2. The backend marks the session as escalated in the database
 3. The UI reflects the escalated state
 
+> **Note:** The n8n escalation webhook is temporarily disabled while the n8n instance is migrated to a new server. Escalations are still detected and recorded in the stats dashboard; only the outbound webhook call is skipped.
+
 ---
 
 ## Architecture
